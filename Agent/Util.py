@@ -17,11 +17,14 @@ def print_grid(grid, sep="  "):
         print(sep.join(row))
 
 def print_route(grid, path):
+    clear_console()
     steps = "Route: "
     for i, step in enumerate(path[0]):
 
         print('Total energy consumed: ', path[1][i])
         print('Total nodes explored: ', i)
+
+        newgrid = grid
 
         if i == 0:
             steps = steps + str(step)
@@ -29,9 +32,8 @@ def print_route(grid, path):
         else: 
             steps = steps + ' --> ' +  str(step)
             print(steps)
-
-        newgrid = grid
-        newgrid[step[0]][step[1]] = 'R'
+            newgrid[step[0]][step[1]] = 'R'
+        
         print_grid(newgrid)
 
         if i == len(path[0]) - 1:

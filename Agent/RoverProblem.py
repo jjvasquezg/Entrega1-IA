@@ -1,13 +1,12 @@
-from Util import print_grid, print_route
+from Util import print_route
 
 import time
 import heapq
 
 class Node:
-    def __init__(self, position, parent=None, action=None, cost = 0, path_cost=0):
+    def __init__(self, position, parent=None, cost = 0, path_cost=0):
         self.position = position
         self.parent = parent
-        self.action = action
         self.cost = cost
         self.path_cost = path_cost
 
@@ -31,8 +30,8 @@ def reconstruct_path(node):
     path_cost.reverse()
     return path, path_cost
 
-def manhatan_distance(pos, goal, cost):
-        return (abs(pos[0] - goal[0]) + abs(pos[1] - goal[1]))*cost
+def manhatan_distance(pos, goal):
+        return (abs(pos[0] - goal[0]) + abs(pos[1] - goal[1]))
 
 def get_neighbors(pos):
     neighbors = []
@@ -48,7 +47,7 @@ def get_neighbors(pos):
 def find_exit():
 
     start_node = Node(start, path_cost=0)
-    frontier = [(manhatan_distance(start, goal, start_node.cost), start_node)]
+    frontier = [(manhatan_distance(start, goal), start_node)]
     heapq.heapify(frontier) #Convierte la lista frontier en una cola de prioridad (heap)
     reached = {start: start_node}
 
@@ -66,20 +65,20 @@ def find_exit():
                 new_cost = node.path_cost + 1
             if neighbor not in reached or new_cost < reached[neighbor].path_cost:
                 reached[neighbor] = Node(neighbor, parent=node, cost=node_cost, path_cost=new_cost)
-                heapq.heappush(frontier, (manhatan_distance(neighbor, goal, node_cost), reached[neighbor]))
+                heapq.heappush(frontier, (manhatan_distance(neighbor, goal)+new_cost, reached[neighbor]))
 
     return None  # No se encontró salida
 
-start = (1, 2)
-goal = (5, 5)
+start = (5, 1)
+goal = (3, 6)
 
 grid = [
     ['#', '#', '#', '#', '#', '#', '#', '#'],
     ['#', '▲', ' ', '▲', '▲', ' ', '#', '#'],
     ['#', '#', ' ', ' ', '▲', '▲', ' ', '#'],
-    ['#', ' ', ' ', '▲', '#', '#', ' ', '#'],
+    ['#', ' ', ' ', '▲', '#', '#', 'E', '#'],
     ['#', ' ', '▲', ' ', '#', ' ', '▲', '#'],
-    ['#', ' ', '▲', '▲', '▲', ' ', '▲', '#'],
+    ['#', 'S', '▲', '▲', '▲', ' ', '▲', '#'],
     ['#', '#', ' ', '▲', ' ', '#', '#', '#'],
     ['#', '#', '#', '#', '#', '#', '#', '#'],
 ]
@@ -99,8 +98,10 @@ start_time = time.perf_counter()
 problem = Problem(start, goal, actions)
 solution = find_exit()
 end_time = time.perf_counter()
-
-print(f"A solution was found in: {(end_time - start_time)*1000:.8f} milliseconds")
-key = input("Press enter to continue with the route animation: ")
-if key == "":
-    print_route(grid, solution)
+if solution:
+    print(f"A solution was found in: {(end_time - start_time)*1000:.8f} milliseconds")
+    key = input("Press enter to continue with the route animation: ")
+    if key == "":
+        print_route(grid, solution)
+else:
+    print("There's no solution for this problem")
