@@ -99,9 +99,9 @@ problem = Problem(start, goal, actions)
 solution = find_exit()
 end_time = time.perf_counter()
 if solution:
-    print(f"A solution was found in: {(end_time - start_time)*1000:.8f} milliseconds")
-    key = input("Press enter to continue with the route animation: ")
+    final_time = f"This solution was found in: {(end_time - start_time)*1000:.8f} milliseconds"
+    key = input("A solution was found.\nPress enter to continue with the route animation: ")
     if key == "":
-        print_route(grid, solution)
+        print_route(grid, solution, final_time)
 else:
     print("There's no solution for this problem")

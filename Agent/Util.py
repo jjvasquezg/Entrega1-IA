@@ -16,7 +16,7 @@ def print_grid(grid, sep="  "):
             row.append(ch)
         print(sep.join(row))
 
-def print_route(grid, path):
+def print_route(grid, path, final_time):
     clear_console()
     steps = "Route: "
     for i, step in enumerate(path[0]):
@@ -37,7 +37,7 @@ def print_route(grid, path):
         print_grid(newgrid)
 
         if i == len(path[0]) - 1:
-            pass
+            print(final_time)
         else:
             print("Next step in 1 second.")
             time.sleep(1)
