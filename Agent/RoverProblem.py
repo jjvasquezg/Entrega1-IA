@@ -71,7 +71,7 @@ def find_exit():
     return None  # No se encontró salida
 
 start = (1, 2)
-goal = (6, 6)
+goal = (5, 5)
 
 grid = [
     ['#', '#', '#', '#', '#', '#', '#', '#'],
