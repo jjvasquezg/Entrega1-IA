@@ -3,6 +3,7 @@ import json
 import csv
 import os
 from typing import List
+from UtilGA import show_week, summary
 
 # --- Datos del problema ---
 # 7 días: genes con valores 'R' (correr), 'G' (gimnasio), 'D' (descanso)
@@ -125,10 +126,10 @@ def evolve(population: List[List[str]], generations: int = 30):
         print(f"Gen {gen+1:2d}: {best} | Fitness: {fitness(best):.2f} | Válido: {is_valid(best)}")
     return best, history
 
-def save_results(best, history, out_dir="../imgs"):
+def save_results(best, history, out_dir="../imgs/GA_imgs"):
     # Ruta robusta y creación de carpeta automáticamente
     base_dir = os.path.dirname(__file__)               # .../GA
-    out_dir = os.path.abspath(os.path.join(base_dir, "..", "imgs"))
+    out_dir = os.path.abspath(os.path.join(base_dir, "..", "imgs","GA_imgs"))
     os.makedirs(out_dir, exist_ok=True)
 
     result = {
@@ -147,9 +148,14 @@ def save_results(best, history, out_dir="../imgs"):
         for g, b, a in history:
             writer.writerow([g, b, a])
 
-if __name__ == "__main__":
-    random.seed(7)
-    pop = create_population(size=40)
-    best, hist = evolve(pop, generations=30)
-    save_results(best, hist)
-    print("\nMejor plan encontrado:", best)
+random.seed(7)
+pop = create_population(size=40)
+best, hist = evolve(pop, generations=30)
+
+print("\nMejor plan encontrado:", best, "\n")
+
+save_results(best, hist)
+show_week(best, DAYS)
+print("Válido:", is_valid(best))
+print("Fitness:", fitness(best))
+summary(best)
