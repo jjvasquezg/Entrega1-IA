@@ -2,12 +2,13 @@ import random
 import json
 import csv
 import os
+import time
 from typing import List
 from UtilGA import show_week, summary
 
 # --- Datos del problema ---
 # 7 días: genes con valores 'R' (correr), 'G' (gimnasio), 'D' (descanso)
-DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 GENES = ['R', 'G', 'D']
 
 def is_valid(plan: List[str]) -> bool:
@@ -109,6 +110,8 @@ def mutate(ind: List[str], prob: float = 0.2) -> List[str]:
 
 # --- Evolución ---
 def evolve(population: List[List[str]], generations: int = 30):
+    text = '=========================== PRINTING GENERATIONS ==========================='
+    print(text.center(20))
     history = []  # (gen, best_f, avg_f)
     best = max(population, key=fitness)
     for gen in range(generations):
@@ -148,14 +151,16 @@ def save_results(best, history, out_dir="../imgs/GA_imgs"):
         for g, b, a in history:
             writer.writerow([g, b, a])
 
+initial = time.perf_counter()
 random.seed(7)
 pop = create_population(size=40)
 best, hist = evolve(pop, generations=30)
-
-print("\nMejor plan encontrado:", best, "\n")
+total = time.perf_counter() - initial
+print("\nBest plan found:", best)
+print(f"This solution was found in: {(total)*1000:.8f} milliseconds", "\n")
 
 save_results(best, hist)
 show_week(best, DAYS)
-print("Válido:", is_valid(best))
+print("Valid:", is_valid(best))
 print("Fitness:", fitness(best))
 summary(best)
