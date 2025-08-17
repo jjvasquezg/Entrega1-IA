@@ -1,0 +1,27 @@
+{
+  "days": [
+    "Lun",
+    "Mar",
+    "Mié",
+    "Jue",
+    "Vie",
+    "Sáb",
+    "Dom"
+  ],
+  "genes": [
+    "R",
+    "G",
+    "D"
+  ],
+  "best_plan": [
+    "R",
+    "G",
+    "G",
+    "D",
+    "R",
+    "G",
+    "D"
+  ],
+  "fitness": 106.5,
+  "valid": true
+}
